@@ -1,4 +1,4 @@
-// Base API URL - Matched with server port number
+// Base API URL 
 const API_URL = 'mongodb://127.0.0.1:27017/employeeDB';
 
 // DOM Elements
