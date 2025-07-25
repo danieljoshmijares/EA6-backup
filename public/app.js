@@ -1,5 +1,5 @@
 // Base API URL - Matched with server port number
-const API_URL = 'https://glorious-space-cod-v6p6gw6qpj4xcw6q-3001.app.github.dev/api/employees';
+const API_URL = 'mongodb://127.0.0.1:27017/employeeDB';
 
 // DOM Elements
 const addForm = document.getElementById('addForm');
