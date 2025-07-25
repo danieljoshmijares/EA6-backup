@@ -1,5 +1,5 @@
 // Base API URL 
-const API_URL = 'mongodb://127.0.0.1:27017/employeeDB';
+const API_URL = 'https://glorious-space-cod-v6p6gw6qpj4xcw6q-3001.app.github.dev/api/employees';
 
 // DOM Elements
 const addForm = document.getElementById('addForm');
