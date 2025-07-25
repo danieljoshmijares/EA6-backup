@@ -1,120 +1,71 @@
-// Base API URL - Update port if needed
-const API_URL = 'http://localhost:2000/api/employees';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .section { margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        h2 { color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        label { display: block; margin: 10px 0 5px; }
+        input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #4CAF50; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; }
+        button:hover { background: #45a049; }
+        .result { margin-top: 15px; padding: 10px; background: #f9f9f9; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Employee Records System</h1>
 
-// DOM Elements
-const addForm = document.getElementById('addForm');
-const searchForm = document.getElementById('searchForm');
-const updateForm = document.getElementById('updateForm');
-const deleteForm = document.getElementById('deleteForm');
+    <!-- Add Record Section -->
+    <div class="section">
+        <h2>Add New Employee</h2>
+        <form id="addForm">
+            <label>Employee ID: <input type="text" name="empid" required></label>
+            <label>Full Name: <input type="text" name="empname" required></label>
+            <label>Position: <input type="text" name="position" required></label>
+            <label>Department: <input type="text" name="department" required></label>
+            <label>Salary: <input type="number" name="salary" required></label>
+            <button type="submit">Add Record</button>
+        </form>
+        <div id="addResult" class="result"></div>
+    </div>
 
-// Handle Add Record
-addForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const resultDiv = document.getElementById('addResult');
-    
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                empid: addForm.empid.value,
-                empname: addForm.empname.value,
-                position: addForm.position.value,
-                department: addForm.department.value,
-                salary: parseFloat(addForm.salary.value)
-            })
-        });
+    <!-- Search Record Section -->
+    <div class="section">
+        <h2>Search Employee</h2>
+        <form id="searchForm">
+            <label>Employee ID: <input type="text" name="empid" required></label>
+            <button type="submit">Search</button>
+        </form>
+        <div id="searchResult" class="result"></div>
+    </div>
 
-        const data = await response.json();
-        if (response.ok) {
-            resultDiv.innerHTML = `<p style="color:green">Success: ${data.message}</p>`;
-            addForm.reset();
-        } else {
-            throw new Error(data.error || 'Failed to add record');
-        }
-    } catch (error) {
-        resultDiv.innerHTML = `<p style="color:red">Error: ${error.message}</p>`;
-    }
-});
+    <!-- Update Record Section -->
+    <div class="section">
+        <h2>Update Employee</h2>
+        <form id="updateForm">
+            <label>Employee ID: <input type="text" name="empid" required></label>
+            <label>Full Name: <input type="text" name="empname"></label>
+            <label>Position: <input type="text" name="position"></label>
+            <label>Department: <input type="text" name="department"></label>
+            <label>Salary: <input type="number" name="salary"></label>
+            <button type="submit">Update Record</button>
+        </form>
+        <div id="updateResult" class="result"></div>
+    </div>
 
-// Handle Search Record
-searchForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const resultDiv = document.getElementById('searchResult');
-    const empid = searchForm.empid.value;
-    
-    try {
-        const response = await fetch(`${API_URL}/${empid}`);
-        const data = await response.json();
-        
-        if (response.ok) {
-            resultDiv.innerHTML = `
-                <p><strong>Employee Found:</strong></p>
-                <p>ID: ${data.empid}</p>
-                <p>Name: ${data.empname}</p>
-                <p>Position: ${data.position}</p>
-                <p>Department: ${data.department}</p>
-                <p>Salary: $${data.salary}</p>
-            `;
-        } else {
-            throw new Error(data.error || 'Employee not found');
-        }
-    } catch (error) {
-        resultDiv.innerHTML = `<p style="color:red">Error: ${error.message}</p>`;
-    }
-});
+    <!-- Delete Record Section -->
+    <div class="section">
+        <h2>Delete Employee</h2>
+        <form id="deleteForm">
+            <label>Employee ID: <input type="text" name="empid" required></label>
+            <button type="submit">Delete Record</button>
+        </form>
+        <div id="deleteResult" class="result"></div>
+    </div>
 
-// Handle Update Record
-updateForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const resultDiv = document.getElementById('updateResult');
-    const empid = updateForm.empid.value;
-    
-    // Prepare update data (only include provided fields)
-    const updateData = {};
-    if (updateForm.empname.value) updateData.empname = updateForm.empname.value;
-    if (updateForm.position.value) updateData.position = updateForm.position.value;
-    if (updateForm.department.value) updateData.department = updateForm.department.value;
-    if (updateForm.salary.value) updateData.salary = parseFloat(updateForm.salary.value);
-    
-    try {
-        const response = await fetch(`${API_URL}/${empid}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updateData)
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            resultDiv.innerHTML = `<p style="color:green">${data.message}</p>`;
-            updateForm.reset();
-        } else {
-            throw new Error(data.error || 'Update failed');
-        }
-    } catch (error) {
-        resultDiv.innerHTML = `<p style="color:red">Error: ${error.message}</p>`;
-    }
-});
-
-// Handle Delete Record
-deleteForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const resultDiv = document.getElementById('deleteResult');
-    const empid = deleteForm.empid.value;
-    
-    try {
-        const response = await fetch(`${API_URL}/${empid}`, {
-            method: 'DELETE'
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            resultDiv.innerHTML = `<p style="color:green">${data.message}</p>`;
-            deleteForm.reset();
-        } else {
-            throw new Error(data.error || 'Delete failed');
-        }
-    } catch (error) {
-        resultDiv.innerHTML = `<p style="color:red">Error: ${error.message}</p>`;
-    }
-});
+    <script src="app.js"></script>
+</body>
+</html>

@@ -7,12 +7,12 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // ✅ Serve static files
+app.use(express.static('public'));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+mongoose.connect("mongodb://127.0.0.1:27017/employeeDB", { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true 
 })
 .then(() => console.log('MongoDB Connected'))
 .catch(err => console.error('MongoDB Error:', err));
@@ -20,7 +20,10 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Employee Model
 const Employee = require('./models/Employee');
 
-// ✅ If you want root to serve index.html, do NOT define a custom `/` route
+// ✅ ✅ ✅ Add THIS root route **BEFORE** other routes or at least before app.listen
+app.get('/', (req, res) => {
+  res.send('Server is working! Use /api/employees to test API.');
+});
 
 // API Routes
 app.post('/api/employees', async (req, res) => {
