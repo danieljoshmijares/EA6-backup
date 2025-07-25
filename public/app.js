@@ -1,5 +1,5 @@
-// Base API URL - Update port if needed
-const API_URL = 'http://localhost:3000/api/employees';
+// Base API URL - Matched with server port number
+const API_URL = 'http://localhost:2000/api/employees';
 
 // DOM Elements
 const addForm = document.getElementById('addForm');
