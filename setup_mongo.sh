@@ -24,3 +24,4 @@ echo "To run MongoDB, use: mongod --dbpath ~/data/db"
 echo "To run your Node app, open a NEW terminal and run: npm start"
 
 
+ 
